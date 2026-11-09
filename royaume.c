@@ -72,7 +72,7 @@ void initialiser_royaume(Royaume *r)
     r->defaites = 0;
 
     r->statistiques.jours_joues = 0;
-    r->statistiques.batiments_construits = 0;
+    r->statistiques.batiments_construits = 2;
     r->statistiques.ameliorations = 0;
     r->statistiques.soldats_recrutes = 0;
     r->statistiques.victoires = 0;

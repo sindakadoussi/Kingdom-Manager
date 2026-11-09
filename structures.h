@@ -75,4 +75,43 @@ typedef struct NoeudHistorique {
     struct NoeudHistorique *suivant;
 } NoeudHistorique;
 
+/* Informations generales du royaume */
+typedef struct {
+    char nom[50];
+
+    int niveau;
+    int jour;
+
+    Ressources ressources;
+
+    int population;
+    int bonheur;
+    int soldats;
+    int niveau_equipement;
+
+    int politique_fiscale;
+    int jours_famine;
+
+    int capacite_stockage;
+    int capacite_population;
+
+    int victoires;
+    int defaites;
+
+    NoeudBatiment *batiments;
+    NoeudHistorique *historique;
+
+   struct {
+    int batiments_construits;
+    int jours_joues;
+    int ameliorations;
+    int soldats_recrutes;
+    int victoires;
+    int defaites;
+    double revenus_totaux;
+    double depenses_totales;
+} statistiques;
+
+} Royaume;
+
 #endif
