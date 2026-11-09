@@ -1,40 +1,67 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "structures.h"
+#include <string.h>
 
-int main() {
+#include "royaume.h"
 
-    printf("\n");
-    printf("====================================\n");
-    printf("          KINGDOM MANAGER           \n");
-    printf("====================================\n");
-
-    printf("\n");
-    printf("  1. Nouvelle partie\n");
-    printf("  2. Charger une partie\n");
-    printf("  3. Quitter\n");
-
-    printf("\n");
-    printf("Votre choix : ");
-
+int main()
+{
     int choix;
-    scanf("%d", &choix);
+    char ligne[20];
 
-    switch (choix) {
-        case 1:
-            printf("\nNouvelle partie !\n");
+    Royaume mon_royaume;
+    int partie_creee = 0;
+
+    do {
+        printf("\n");
+        printf("====================================\n");
+        printf("          KINGDOM MANAGER\n");
+        printf("====================================\n");
+
+        printf("  1. Nouvelle partie\n");
+        printf("  2. Charger une partie\n");
+        printf("  3. Quitter\n");
+
+        printf("\nVotre choix : ");
+
+        if (fgets(ligne, sizeof(ligne), stdin) == NULL) {
             break;
+        }
 
-        case 2:
-            printf("\nChargement d'une partie...\n");
-            break;
+        choix = atoi(ligne);
 
-        case 3:
-            printf("\nAu revoir !\n");
-            break;
+        switch (choix) {
 
-        default:
-            printf("\nChoix invalide !\n");
+            case 1:
+                if (partie_creee) {
+                    liberer_batiments(&mon_royaume.batiments);
+                    liberer_historique(&mon_royaume.historique);
+                }
+
+                creer_royaume(&mon_royaume);
+                partie_creee = 1;
+
+                afficher_tableau_bord(&mon_royaume);
+                break;
+
+            case 2:
+                printf("\nLe chargement sera ajoute dans une prochaine etape.\n");
+                break;
+
+            case 3:
+                printf("\nAu revoir, roi ou reine !\n");
+                break;
+
+            default:
+                printf("\nChoix invalide ! Reessayez.\n");
+        }
+
+    } while (choix != 3);
+
+    if (partie_creee) {
+        liberer_batiments(&mon_royaume.batiments);
+        liberer_historique(&mon_royaume.historique);
     }
 
     return 0;
