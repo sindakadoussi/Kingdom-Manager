@@ -1,117 +1,86 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
-/* Gestion des ressources du royaume */
+#include <stdbool.h>
+#include "constantes.h"
+
+/* Types de ressources. L'or est une monnaie et n'est pas limité par l'entrepôt. */
+typedef enum {
+    RESSOURCE_BOIS = 0,
+    RESSOURCE_PIERRE,
+    RESSOURCE_NOURRITURE,
+    RESSOURCE_FER,
+    RESSOURCE_OR,
+    NB_RESSOURCES
+} TypeRessource;
+
 typedef struct {
-    double or;
     int bois;
     int pierre;
     int nourriture;
     int fer;
+    double or;
 } Ressources;
 
-/* Types de batiments */
 typedef enum {
-    CHATEAU,
-    FERME,
-    SCIERIE,
-    CARRIERE,
-    MINE_FER,
-    CASERNE,
-    MAISON,
-    ENTREPOT
+    BATIMENT_CHATEAU = 0,
+    BATIMENT_FERME,
+    BATIMENT_SCIERIE,
+    BATIMENT_CARRIERE,
+    BATIMENT_MINE_FER,
+    BATIMENT_MAISON,
+    BATIMENT_CASERNE,
+    BATIMENT_ENTREPOT,
+    NB_TYPES_BATIMENTS
 } TypeBatiment;
 
-/* Informations d'un batiment */
 typedef struct {
     int id;
     TypeBatiment type;
     int niveau;
+    char nom[NOM_BATIMENT_MAX];
 } Batiment;
 
-/* Liste chainee des batiments */
 typedef struct NoeudBatiment {
     Batiment batiment;
     struct NoeudBatiment *suivant;
 } NoeudBatiment;
 
-/* Configuration des batiments */
+typedef enum {
+    POLITIQUE_FAIBLE = 0,
+    POLITIQUE_NORMALE,
+    POLITIQUE_ELEVEE
+} PolitiqueFiscale;
+
 typedef struct {
-    char nom[30];
+    double revenus_jour;
+    double depenses_jour;
+    double revenus_total;
+    double depenses_total;
+} BilanEconomique;
 
-    int cout_or;
-    int cout_bois;
-    int cout_pierre;
-
-    int production;
-    int type_production;
-
-    int niveau_requis;
-
-    int effet_niveau1;
-    int effet_niveau2;
-    int effet_niveau3;
-
-} ConfigurationBatiment;
-
-/* Gestion des evenements aleatoires */
 typedef struct {
-    int id;
-    int jour;
-    int type;
-    int valeur;
-    char description[100];
-} Evenement;
-
-/* Informations de l'historique */
-typedef struct {
-    int jour;
-    char description[150];
-} Historique;
-
-/* Liste chainee de l'historique */
-typedef struct NoeudHistorique {
-    Historique historique;
-    struct NoeudHistorique *suivant;
-} NoeudHistorique;
-
-/* Informations generales du royaume */
-typedef struct {
-    char nom[50];
-
-    int niveau;
-    int jour;
+    char nom[NOM_ROYAUME_MAX];
+    char nom_joueur[NOM_JOUEUR_MAX];
 
     Ressources ressources;
-
-    int population;
-    int bonheur;
-    int soldats;
-    int niveau_equipement;
-
-    int politique_fiscale;
-    int jours_famine;
-
-    int capacite_stockage;
-    int capacite_population;
-
-    int victoires;
-    int defaites;
+    Ressources production_jour;
 
     NoeudBatiment *batiments;
-    NoeudHistorique *historique;
+    int prochain_id_batiment;
 
-   struct {
-    int batiments_construits;
-    int jours_joues;
-    int ameliorations;
-    int soldats_recrutes;
-    int victoires;
-    int defaites;
-    double revenus_totaux;
-    double depenses_totales;
-} statistiques;
+    int population;
+    int capacite_population;
+    int bonheur;                 /* borné entre 0 et 100 */
+    int capacite_stockage;       /* par ressource stockable */
+    int niveau_entrepot;         /* 0 = aucun, 1..3 */
+    int jour;
 
+    PolitiqueFiscale politique_fiscale;
+    BilanEconomique economie;
+
+    int niveau_royaume;
+    int points_progression;
 } Royaume;
 
 #endif
